@@ -1,50 +1,49 @@
-# 🌊 IoT Advanced Flood Detection System
+# 🌊 FloodWatch Pro: Advanced ESP8266 Flood Detection
 
 ![ESP8266](https://img.shields.io/badge/ESP8266-NodeMCU-blue)
 ![C++](https://img.shields.io/badge/Language-C++-00599C)
 ![License](https://img.shields.io/badge/License-MIT-green)
+![Version](https://img.shields.io/badge/Version-3.0-orange)
 
-A robust, real-time IoT flood monitoring system built with the ESP8266 NodeMCU and an HC-SR04 ultrasonic sensor. This project features a modern, interactive web dashboard stored entirely in the ESP8266's flash memory, providing live water level simulations, asynchronous hardware alerts, and device-level audio sirens.
+FloodWatch Pro is a highly responsive, real-time IoT water level monitoring system. Built for the ESP8266 (NodeMCU) and the HC-SR04 ultrasonic sensor, it features advanced signal processing to eliminate false alarms and a stunning, retro-industrial web dashboard served directly from the ESP8266's flash memory.
 
-## ✨ Features
+## ✨ v3.0 Key Features
 
-* **Real-Time Web Dashboard:** A responsive, glass-morphism UI that visualizes water levels dynamically.
-* **Zero-Delay Architecture:** Built with `ESP8266WebServer` and `millis()` for non-blocking execution. The web server and hardware sensors run simultaneously without freezing.
-* **3-Tier Alert System:** Intelligently categorizes water levels into SAFE, WARNING, and DANGER zones with distinct visual and audio cues.
-* **Robust Sensor Logic (Median Filter):** Includes a custom filtering algorithm that takes multiple rapid readings and discards outliers to prevent false-positive alarms.
-* **Dual-Audio Alarms:** Triggers a 4000Hz piercing hardware buzzer locally, while also unlocking the browser's audio API to sound a siren on the viewing device (phone/laptop).
-* **Flash Memory Storage:** HTML/CSS/JS is served directly from PROGMEM to prevent RAM overflow and crashing.
+* **Advanced Signal Processing:** Uses an Exponential Moving Average (EMA) filter combined with outlier rejection and hysteresis. This ensures spurious sensor readings (ghost echoes) never trigger a false alarm.
+* **Zero-Latency Web Audio Siren:** Browser audio alerts are generated dynamically using the Web Audio API (oscillators and LFOs) instead of downloading heavy `.mp3` files, ensuring instant alarm firing.
+* **3-Tier Hysteresis Alert System:** Intelligently categorizes water levels (SAFE, WARNING, DANGER). Upgrading to a higher alert requires consecutive positive readings to prevent bouncing, while downgrading to SAFE is instantaneous.
+* **Non-Blocking Architecture:** Built entirely without `delay()`. The HTTP server, sensor polling (200ms intervals), and hardware buzzer states run completely asynchronously.
+* **Industrial Dashboard:** A beautifully designed, retro-tech web interface featuring a live SVG distance gauge, animated water tank simulation, dynamic history sparklines, and session statistics.
 
 ## 🛠️ Hardware Requirements
 
 * 1x ESP8266 NodeMCU (ESP-12E)
 * 1x HC-SR04 Ultrasonic Sensor
 * 1x Passive Piezo Buzzer
-* 1x 220Ω Resistor
+* 1x 220Ω Resistor (for buzzer protection)
+* Optional: 1kΩ & 2kΩ resistors (for an HC-SR04 Echo voltage divider)
 * Breadboard & Jumper Wires (M-M, M-F)
-* Micro-USB Cable (with data transfer capability)
+* Micro-USB Data Cable
 
 ## 🔌 Circuit & Wiring
 
-| HC-SR04 / Component | ESP8266 Pin | Notes |
+| Component / Pin | ESP8266 Pin | Notes |
 | :--- | :--- | :--- |
-| **VCC** (Sensor) | **Vin / VU** | Powers the sensor with 5V from USB |
-| **GND** (Sensor) | **GND** | Ground connection |
-| **TRIG** (Sensor) | **D5** | Trigger Pin |
-| **ECHO** (Sensor) | **D6** | Echo Pin |
-| **Buzzer (+) Long Leg** | **D7** | Connected *through* the 220Ω Resistor |
-| **Buzzer (-) Short Leg**| **GND** | Ground connection |
+| **HC-SR04 VCC** | **Vin (5V)** | The sensor requires 5V to operate reliably. |
+| **HC-SR04 GND** | **GND** | Standard ground connection. |
+| **HC-SR04 TRIG** | **D5 (GPIO 14)** | Sends the ultrasonic pulse. |
+| **HC-SR04 ECHO** | **D6 (GPIO 12)** | *Note: The sensor outputs 5V on ECHO. While the ESP8266 is often 5V tolerant, using a voltage divider here is best practice.* |
+| **Buzzer (+)** | **D7 (GPIO 13)** | Connect through a 220Ω resistor. |
+| **Buzzer (-)** | **GND** | Standard ground connection. |
 
-> **Note:** Always use a 220Ω resistor in series with the buzzer to protect the ESP8266 GPIO pins from drawing too much current.
-
-*(Optional: Add a picture of your circuit diagram here by linking to `assets/circuit_diagram.png`)*
+*(Optional: Insert `assets/circuit_diagram.png` here)*
 
 ## 🚀 Installation & Setup
 
-1. **Install the Arduino IDE** and add the ESP8266 board manager URL to your preferences.
+1. **Install the Arduino IDE** and ensure the ESP8266 board manager is configured.
 2. **Clone this repository** to your local machine.
-3. Open `src/IoT_Flood_Monitor.ino` in the Arduino IDE.
-4. **Update Network Credentials:** Change the Wi-Fi settings to match your local network:
+3. Open `src/FloodWatch_Pro.ino` in the Arduino IDE.
+4. **Update Network Credentials:**
    ```cpp
-   const char* ssid = "YOUR_WIFI_NAME";
-   const char* password = "YOUR_WIFI_PASSWORD";
+   const char* WIFI_SSID     = "YOUR WIFI NAME";
+   const char* WIFI_PASSWORD = "YOUR PASSWORD";
