@@ -36,7 +36,7 @@ FloodWatch Pro is a highly responsive, real-time IoT water level monitoring syst
 | **Buzzer (+)** | **D7 (GPIO 13)** | Connect through a 220Ω resistor. |
 | **Buzzer (-)** | **GND** | Standard ground connection. |
 
-*(Optional: Insert `assets/circuit_diagram.png` here)*
+![Circuit Diagram](Circuit_Diagram.png)
 
 ## 🚀 Installation & Setup
 
