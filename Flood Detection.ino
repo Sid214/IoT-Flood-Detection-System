@@ -32,8 +32,8 @@
 #include <ESP8266WebServer.h>
 
 // ── User config ────────────────────────────────────────────────
-const char* WIFI_SSID     = "Valar Morgulis";
-const char* WIFI_PASSWORD = "Valar Dohaeris.";
+const char* WIFI_SSID     = "YOUR WIFI NAME";
+const char* WIFI_PASSWORD = " YOUR PASSWORD ";
 
 // Alert thresholds (centimetres). Change freely.
 const int DANGER_CM  = 15;   // ≤ this → DANGER  (flood)
